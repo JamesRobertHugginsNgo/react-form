@@ -1,0 +1,35 @@
+body {
+	background-color: #165788;
+	color: #ffffff;
+}
+
+.internet-cframe {
+	& > header {
+		& > nav {
+			background-color: #e5e5e5;
+			color: #000000;
+
+			.breadcrumb {
+				.breadcrumb-item {
+					font-weight: 500;
+
+					a {
+						color: #2d699e;
+						text-decoration: none;
+					}
+
+					&.active {
+						color: #000000;
+						font-weight: normal;
+					}
+				}
+			}
+		}
+	}
+
+	& > main {
+		background-color: #ffffff;
+		color: #000000;
+	}
+}
+
