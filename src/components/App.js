@@ -1,41 +1,63 @@
 import React from 'react';
+import router from 'router/dist/browser/es6-module/router'
 
 import InternetCframe from './InternetCframe';
-import ReactFormRow from './ReactFormRow';
 
-export default function App() {
-	const breadcrumb = [
-		{
-			text: 'Group',
-			link: 'http://www.google.ca/'
-		},
-		{
-			text: 'App'
-		}
-	];
+import HomePage from './HomePage';
+import FormPage from './FormPage';
 
-	const fields = [
-		[
+export default class App extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = { page: null, breadcrumbs: [] };
+
+		this.router = router([
 			{
-				label: 'Label 1'
+				regex: /^home$/,
+				callback: () => {
+					this.setState({
+						page: 'home',
+						breadcrumbs: [{ text: 'App Name' }]
+					})
+				}
 			},
 			{
-				label: 'Label 2'
-			}
-		],
-		[
+				regex: /^form$/,
+				callback: () => {
+					this.setState({
+						page: 'form',
+						breadcrumbs: [{ text: 'App Name', link: '#home' }, { text: 'Form' }]
+					})
+				}
+			},
 			{
-				label: 'Label 3'
+				callback: () => {
+					this.router.pushRoute('home');
+				}
 			}
-		]
-	];
+		]);
+	}
 
-	return (
-		<InternetCframe breadcrumbs={breadcrumb}>
-			<div className="container">
-				<ReactFormRow fields={fields[0]}></ReactFormRow>
-				<ReactFormRow fields={fields[1]}></ReactFormRow>
-			</div>
-		</InternetCframe>
-	);
+	render() {
+		const { page, breadcrumbs } = this.state;
+
+		return (
+			<InternetCframe breadcrumbs={breadcrumbs}>
+				{
+					page === 'home' ? (<HomePage />)
+						: page === 'form' ? (<FormPage />)
+							: null
+				}
+			</InternetCframe>
+		);
+	}
+
+	componentDidMount() {
+		this.router.start();
+	}
+
+	componentWillUnmount() {
+		this.router.end();
+	}
 }

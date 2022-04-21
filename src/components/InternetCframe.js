@@ -1,80 +1,95 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import './InternetCframe.scss';
 
-function InternetCframeBreadcrumbs({ breadcrumbs }) {
-	breadcrumbs = [{
-		text: 'City of Toronto',
-		link: 'https://www.toronto.ca/'
-	}, ...breadcrumbs];
+class Breadcrumb extends React.Component {
+	render() {
+		const { text, link, isactive = false } = this.props;
 
-	const breadcrumbItems = [];
+		const className = ['breadcrumb-item'];
+		if (isactive) {
+			className.push('active');
+		}
 
-	const length = breadcrumbs.length;
-	const last = length - 1;
-	for (let index = 0 ; index < length; index++) {
-		const { text, link } = breadcrumbs[index];
-		const key = `breadcrumb-${index}`;
-		if (index === last) {
-			breadcrumbItems.push(<li className="breadcrumb-item active" aria-current="page" key={key}>{text}</li>);
-			continue;
-		}
-		if (link) {
-			breadcrumbItems.push(<li className="breadcrumb-item" key={key}><a href={link}>{text}</a></li>);
-			continue;
-		}
-		breadcrumbItems.push(<li className="breadcrumb-item" key={key}>{text}</li>);
+		return (
+			<li className={className.join(' ')}>
+				{link && !isactive ? (<a href={link}>{text}</a>) : text}
+			</li>
+		);
 	}
 
-	return (
-		<ol className="breadcrumb mb-0">
-			{breadcrumbItems}
-		</ol>
-	);
+	static propTypes = {
+		text: PropTypes.string.isRequired,
+		link: PropTypes.string,
+		isactive: PropTypes.bool
+	}
 }
 
-InternetCframeBreadcrumbs.propTypes = {
-	breadcrumbs: PropTypes.arrayOf(PropTypes.shape({
-		text: PropTypes.string,
-		link: PropTypes.string
-	}))
+class Breadcrumbs extends React.Component {
+	render() {
+		return (
+			<ol className="breadcrumb mb-0">
+				{
+					[
+						{
+							text: 'City of Toronto',
+							link: 'https://www.toronto.ca/'
+						},
+						...this.props.breadcrumbs
+					].map(({ text, link }, index, array) => (
+						<Breadcrumb
+							text={text}
+							link={link}
+							isactive={index === array.length - 1}
+							key={index}
+						/>
+					))
+				}
+			</ol>
+		);
+	}
+
+	static propTypes = {
+		breadcrumbs: PropTypes.arrayOf(PropTypes.shape(Breadcrumb.propTypes)).isRequired
+	}
 }
 
-function InternetCframe({ breadcrumbs, children }) {
-	return (
-		<div className="internet-cframe">
-			<header className='mt-3'>
-				<div className='container-fluid'>
-					HEADER
-				</div>
+export default class InternetCframe extends React.Component {
+	render() {
+		const { breadcrumbs, children } = this.props;
 
-				<nav aria-label="breadcrumb" className='mt-3 py-3'>
+		return (
+			<div className="internet-cframe">
+				<header className='pt-3'>
 					<div className='container-fluid'>
-						<InternetCframeBreadcrumbs breadcrumbs={breadcrumbs}></InternetCframeBreadcrumbs>
+						HEADER
 					</div>
-				</nav>
-			</header>
-			<main className='py-3'>
-				<div className='container'>
-					{children}
-				</div>
-			</main>
-			<footer className='my-3'>
-				<div className='container-fluid'>
-					FOOTER
-				</div>
-			</footer>
-		</div>
-	);
-}
 
-InternetCframe.propTypes = {
-	breadcrumbs: PropTypes.arrayOf(PropTypes.shape({
-		text: PropTypes.string,
-		link: PropTypes.string
-	})),
-	children: PropTypes.node
-}
+					<nav aria-label="breadcrumb" className='mt-3 py-3'>
+						<div className='container-fluid'>
+							<Breadcrumbs breadcrumbs={breadcrumbs} />
+						</div>
+					</nav>
+				</header>
 
-export default InternetCframe;
+				<main className='py-3'>
+					<div className='container'>
+						{children}
+					</div>
+				</main>
+
+				<footer className='py-3'>
+					<div className='container-fluid'>
+						FOOTER
+					</div>
+				</footer>
+			</div>
+		);
+	}
+
+	static propTypes = {
+		breadcrumbs: Breadcrumbs.propTypes.breadcrumbs,
+		children: PropTypes.node
+	}
+}
