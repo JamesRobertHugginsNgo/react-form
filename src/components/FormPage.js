@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Form, { TextField, TextAreaField } from './Form';
+import Form, { TextField, NumberField, TextAreaField } from './Form';
 
 export default class FormPage extends React.Component {
 	constructor(props) {
@@ -32,6 +32,9 @@ export default class FormPage extends React.Component {
 										bindto: 'text-2'
 									},
 									{
+										component: NumberField,
+										label: 'Number Field',
+										bindto: 'number-field'
 									}
 								]
 							},
