@@ -1,6 +1,10 @@
 import React from 'react';
 
-import Form, { TextField, NumberField, TextAreaField } from './Form';
+import InternetCframe from './InternetCframe';
+import Form from './Form';
+import TextField from './TextField';
+import NumberField from './NumberField';
+import TextareaField from './TextareaField';
 
 export default class FormPage extends React.Component {
 	constructor(props) {
@@ -19,8 +23,8 @@ export default class FormPage extends React.Component {
 								id: 'row-1',
 								fields: [
 									{
-										id: 'field-1',
 										component: TextField,
+										id: 'field-1',
 										label: 'Text 1',
 										helptext: 'This is a text field',
 										bindto: 'text-1'
@@ -41,7 +45,7 @@ export default class FormPage extends React.Component {
 							{
 								fields: [
 									{
-										component: TextAreaField,
+										component: TextareaField,
 										label: 'Textarea',
 										bindto: 'textarea'
 									}
@@ -75,21 +79,25 @@ export default class FormPage extends React.Component {
 	render() {
 		const { config } = this.state;
 
-		return (
-			<div className="container">
-				<div className='row'>
-					<div className='col'>
-						<h1>Form</h1>
-					</div>
-				</div>
+		document.title = 'Form - React Form';
 
-				<div className='row'>
-					<div className='col'>
-						<Form {...config} />
-						{JSON.stringify(this.state.data)}
+		return (
+			<InternetCframe breadcrumbs={[{ text: 'App', link: '#/home' }, { text: 'Form' }]}>
+				<div className="container">
+					<div className='row'>
+						<div className='col'>
+							<h1>Form</h1>
+						</div>
+					</div>
+
+					<div className='row'>
+						<div className='col'>
+							<Form {...config} />
+							{JSON.stringify(this.state.data)}
+						</div>
 					</div>
 				</div>
-			</div>
+			</InternetCframe>
 		);
 	}
 }

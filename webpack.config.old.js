@@ -143,8 +143,12 @@ module.exports = (env, { mode }) => {
 					vendors: {
 						test: /[\\/]node_modules[\\/]/,
 						name(module, chunks, cacheGroupKey) {
-							const match = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/);
-							const packageName = match ? match[1] : 'app';
+							console.log('-----------------');
+							console.log(module.context);
+							console.log(module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/));
+							const packageName = module.context
+								? module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1]
+								: 'TEST';
 
 							return `${cacheGroupKey}.${packageName.replace('@', '')}`;
 						}

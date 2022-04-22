@@ -1,124 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-export class TextField extends React.Component {
-	render() {
-		const {
-			id = `textfield-${TextField.idCounter++}`,
-			label = 'Unlabelled',
-			helptext,
-			bindto,
-			updateData
-		} = this.props;
-
-		return (
-			<>
-				<label htmlFor={id} className="form-label">{label}</label>
-				<input
-					type="text"
-					className="form-control"
-					id={id}
-					aria-describedby={helptext ? `${id}-help` : null}
-					onChange={bindto && updateData ? (event) => void updateData(bindto, event.target.value) : null}
-				/>
-				{
-					helptext
-					? (<div id={`${id}-help`} className="form-text">{helptext}</div>)
-					: null
-				}
-			</>
-		);
-	}
-
-	static propTypes = {
-		id: PropTypes.string,
-		label: PropTypes.string,
-		helptext: PropTypes.string,
-		bindto: PropTypes.string,
-		updateData: PropTypes.func
-	}
-
-	static idCounter = 0
-}
-
-export class NumberField extends React.Component {
-	render() {
-		const {
-			id = `numberfield-${NumberField.idCounter++}`,
-			label = 'Unlabelled',
-			helptext,
-			bindto,
-			updateData
-		} = this.props;
-
-		return (
-			<>
-				<label htmlFor={id} className="form-label">{label}</label>
-				<input
-					type="number"
-					className="form-control"	
-					id={id}
-					aria-describedby={helptext ? `${id}-help` : null}
-					onChange={bindto && updateData ? (event) => void updateData(bindto, +event.target.value) : null}
-				/>
-				{
-					helptext
-					? (<div id={`${id}-help`} className="form-text">{helptext}</div>)
-					: null
-				}
-			</>
-		);
-	}
-
-	static propTypes = {
-		id: PropTypes.string,
-		label: PropTypes.string,
-		helptext: PropTypes.string,
-		bindto: PropTypes.string,
-		updateData: PropTypes.func
-	}
-
-	static idCounter = 0
-}
-
-export class TextAreaField extends React.Component {
-	render() {
-		const {
-			id = `textareafield-${TextAreaField.idCounter++}`,
-			label = 'Unlabelled',
-			helptext,
-			bindto,
-			updateData
-		} = this.props;
-
-		return (
-			<>
-				<label htmlFor={id} className="form-label">{label}</label>
-				<textarea
-					className="form-control"
-					id={id}
-					aria-describedby={helptext ? `${id}-help` : null}
-					onChange={bindto && updateData ? (event) => void updateData(bindto, event.target.value) : null}
-				/>
-				{
-					helptext
-					? (<div id={`${id}-help`} className="form-text">{helptext}</div>)
-					: null
-				}
-			</>
-		);
-	}
-
-	static propTypes = {
-		id: PropTypes.string,
-		label: PropTypes.string,
-		helptext: PropTypes.string,
-		bindto: PropTypes.string,
-		updateData: PropTypes.func
-	}
-
-	static idCounter = 0
-}
+import TextField from './TextField';
 
 class FormField extends React.Component {
 	render() {
@@ -183,7 +66,6 @@ class FormSection extends React.Component {
 export default class Form extends React.Component {
 	constructor(props) {
 		super(props);
-
 		this.formRef = React.createRef();
 	}
 
@@ -199,7 +81,8 @@ export default class Form extends React.Component {
 	}
 
 	componentDidMount() {
-		console.log(this.formRef.current); // ADD FORM VALIDATION
+		console.log(this.formRef.current);
+		// TODO - ADD FORM VALIDATION HERE
 	}
 
 	static propTypes = {
