@@ -8,7 +8,7 @@ export default class HomePage extends React.Component {
 		document.title = 'Home - React Form';
 
 		return (
-			<InternetCframe breadcrumb={[{ text: 'App' }]}>
+			<InternetCframe breadcrumbs={[{ text: 'App' }]}>
 				<div className="container">
 					<div className='row'>
 						<div className='col'>
