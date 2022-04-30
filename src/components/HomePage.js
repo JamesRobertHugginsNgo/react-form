@@ -1,7 +1,6 @@
 import React from 'react';
+import InternetCframe from 'react-cframe';
 import { Link } from "react-router-dom";
-
-import InternetCframe from './InternetCframe';
 
 export default class HomePage extends React.Component {
 	render() {

@@ -1,5 +1,3 @@
-// Reference: https://www.toptal.com/react/webpack-react-tutorial-pt-1
-
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -12,10 +10,10 @@ module.exports = (env, { mode }) => {
 
 	return {
 		devtool: !isProduction && 'cheap-module-source-map',
-		entry: './src/index.js',
+		entry: path.resolve(__dirname, './src', 'index.js'),
 		output: {
 			clean: true,
-			path: path.resolve(__dirname, 'dist'),
+			path: path.resolve(__dirname, './dist'),
 			filename: 'scripts/[name].[contenthash:8].js'
 		},
 		module: {
@@ -27,8 +25,8 @@ module.exports = (env, { mode }) => {
 						loader: 'babel-loader',
 						options: {
 							cacheDirectory: true,
-							cacheCompression: false,
-							envName: isProduction ? 'production' : 'development'
+							cacheCompression: false
+							// envName: isProduction ? 'production' : 'development'
 						}
 					}
 				},
@@ -82,8 +80,19 @@ module.exports = (env, { mode }) => {
 						}
 					}
 				},
+				// {
+				// 	test: /\.svg$/,
+				// 	use: ['@svgr/webpack']
+				// },
 				{
-					test: /\.svg$/,
+					test: /\.svg$/i,
+					type: 'asset',
+					resourceQuery: /url/ // *.svg?url
+				},
+				{
+					test: /\.svg$/i,
+					issuer: /\.[jt]sx?$/,
+					resourceQuery: { not: [/url/] }, // exclude react component if *.svg?url
 					use: ['@svgr/webpack']
 				},
 				{
@@ -110,8 +119,7 @@ module.exports = (env, { mode }) => {
 			}),
 			new HtmlWebpackPlugin({
 				inject: false,
-				template: path.resolve(__dirname, 'src', 'index.html'),
-				title: 'React Form'
+				template: path.resolve(__dirname, './src', 'index.html')
 			})
 		].filter(Boolean),
 		optimization: {
@@ -145,7 +153,6 @@ module.exports = (env, { mode }) => {
 						name(module, chunks, cacheGroupKey) {
 							const match = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/);
 							const packageName = match ? match[1] : 'app';
-
 							return `${cacheGroupKey}.${packageName.replace('@', '')}`;
 						}
 					},

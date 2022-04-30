@@ -1,6 +1,6 @@
 import React from 'react';
+import InternetCframe from 'react-cframe';
 
-import InternetCframe from './InternetCframe';
 import Form from './Form';
 import TextField from './TextField';
 import NumberField from './NumberField';
